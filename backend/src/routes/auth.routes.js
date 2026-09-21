@@ -5,5 +5,6 @@ const router = express.Router(); // express se ek method li hai udhaar. jo ki ro
 
 /* POST /api/auth/register */
 router.post("/register", authController.userRegisterController);
+router.post("/login", authController.userLoginController);
 
 module.exports = router;

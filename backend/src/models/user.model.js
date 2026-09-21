@@ -25,17 +25,15 @@ const userSchema = new mongoose.Schema(
       select: false, //Koi bhi query me by default nahi aane dega iss field ko, jab tk explcitly nahi bulaya jaaye.
     },
   },
-  { timeStamps: true },
+  { timestamps: true },
 );
 
 // middleware jo bolta hai ki save k pehle isko function ko chalado
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // agar password wali field me changes nahi hai schema k, toh next middleware call karo
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return; // agar password wali field me changes nahi hai schema k, toh aage badho
 
   const hash = await bcrypt.hash(this.password, 10); // nahi toh hash me conver krdo
   this.password = hash;
-
-  return next();
 });
 
 // ye userSchema me method attact krdi hamesha k liye, comparePassword naamse. ye compare krti hai incoming vs existing password ko
